@@ -1,11 +1,12 @@
 {
-  "name": "opus-media-recorder",
+  "name": "@dmk-dark/opus-media-recorder-fork",
   "version": "0.8.0",
   "author": "Bumsik Kim",
   "license": "MIT",
   "homepage": "https://github.com/kbumsik/opus-media-recorder",
   "description": "MedialRecorer polyfill for Opus recording using WebAssembly",
   "main": "OpusMediaRecorder.js",
+  "types": "index.d.ts",
   "files": [
     "OpusMediaRecorder.js",
     "OpusMediaRecorder.umd.js",
@@ -18,11 +19,12 @@
     "WebMOpusEncoder.wasm",
     "WebMOpusEncoder.bin",
     "WaveEncoder.js",
-    "commonFunctions.js"
+    "commonFunctions.js",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
-    "url": "https+git://github.com/kbumsik/opus-media-recorder"
+    "url": "https+git://github.com/dmk-dark/opus-media-recorder"
   },
   "keywords": [
     "MediaRecorder",
@@ -73,5 +75,15 @@
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14",
     "wrapper-webpack-plugin": "^2.1.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "node-forge@<1.0.0": ">=1.0.0",
+      "node-forge@<1.3.0": ">=1.3.0",
+      "webpack-dev-middleware@<=5.3.3": ">=5.3.4",
+      "braces@<3.0.3": ">=3.0.3",
+      "micromatch@<4.0.8": ">=4.0.8",
+      "http-proxy-middleware@<2.0.7": ">=2.0.7"
+    }
   }
 }

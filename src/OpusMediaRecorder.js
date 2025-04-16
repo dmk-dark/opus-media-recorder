@@ -2,7 +2,7 @@ const { EventTarget, defineEventAttribute } = require('event-target-shim');
 const { detect } = require('detect-browser');
 const browser = detect();
 
-const AudioContext = global.AudioContext || global.webkitAudioContext;
+const AudioContext = globalThis.AudioContext || globalThis.webkitAudioContext;
 const BUFFER_SIZE = 4096;
 
 /**
@@ -38,11 +38,14 @@ class OpusMediaRecorder extends EventTarget {
    * @param {string} [workerOptions.WebMOpusEncoderWasmPath]
    *          Path of ./WebMOpusEncoder.wasm which is used for WebM Opus encoding
    *          by the encoder worker. This is NON-STANDARD.
+   * @param {Object} [audioOptions] This is a NON-STANDARD parameter to
+   *          configure audio settings for recording.
    */
-  constructor (stream, options = {}, workerOptions = {}) {
+  constructor (stream, options = {}, workerOptions = {}, audioOptions = {}) {
     const { mimeType, audioBitsPerSecond, videoBitsPerSecond, bitsPerSecond } = options; // eslint-disable-line
     // NON-STANDARD options
     const { encoderWorkerFactory, OggOpusEncoderWasmPath, WebMOpusEncoderWasmPath } = workerOptions;
+    const { sampleRate } = audioOptions;
 
     super();
     // Attributes for the specification conformance. These have their own getters.
@@ -52,6 +55,9 @@ class OpusMediaRecorder extends EventTarget {
     this._audioBitsPerSecond = audioBitsPerSecond || bitsPerSecond;
     /** @type {'inactive'|'readyToInit'|'encoding'|'closed'} */
     this.workerState = 'inactive';
+    this._audioOptions = {
+      sampleRate
+    };
 
     // Parse MIME Type
     if (!OpusMediaRecorder.isTypeSupported(this._mimeType)) {
@@ -216,7 +222,7 @@ class OpusMediaRecorder extends EventTarget {
         // Start streaming
         this.source.connect(this.processor);
         this.processor.connect(this.context.destination);
-        let eventToPush = new global.Event('start');
+        let eventToPush = new globalThis.Event('start');
         this.dispatchEvent(eventToPush);
         break;
 
@@ -271,13 +277,13 @@ class OpusMediaRecorder extends EventTarget {
       case 'encodedData':
       case 'lastEncodedData':
         let data = new Blob(buffers, {'type': this._mimeType});
-        eventToPush = new global.Event('dataavailable');
+        eventToPush = new globalThis.Event('dataavailable');
         eventToPush.data = data;
         this.dispatchEvent(eventToPush);
 
         // Detect of stop() called before
         if (command === 'lastEncodedData') {
-          eventToPush = new global.Event('stop');
+          eventToPush = new globalThis.Event('stop');
           this.dispatchEvent(eventToPush);
 
           this.workerState = 'closed';
@@ -307,7 +313,7 @@ class OpusMediaRecorder extends EventTarget {
       'LineNumber: ' + error.lineno,
       'Message: ' + error.message
     ].join(' - ');
-    let errorToPush = new global.Event('error');
+    let errorToPush = new globalThis.Event('error');
     errorToPush.name = 'UnknownError';
     errorToPush.message = message;
     this.dispatchEvent(errorToPush);
@@ -369,7 +375,7 @@ class OpusMediaRecorder extends EventTarget {
     // Get channel count and sampling rate
     // channelCount: https://www.w3.org/TR/mediacapture-streams/#media-track-settings
     // sampleRate: https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/sampleRate
-    this.context = new AudioContext();
+    this.context = new AudioContext({sampleRate: this._audioOptions.sampleRate});
     let tracks = this.stream.getAudioTracks();
     if (!tracks[0]) {
       throw new Error('DOMException: UnkownError, media track not found.');
@@ -428,7 +434,7 @@ class OpusMediaRecorder extends EventTarget {
     this.source.disconnect();
     this.processor.disconnect();
 
-    let event = new global.Event('pause');
+    let event = new globalThis.Event('pause');
     this.dispatchEvent(event);
     this._state = 'paused';
   }
@@ -445,7 +451,7 @@ class OpusMediaRecorder extends EventTarget {
     this.source.connect(this.processor);
     this.processor.connect(this.context.destination);
 
-    let event = new global.Event('resume');
+    let event = new globalThis.Event('resume');
     this.dispatchEvent(event);
     this._state = 'recording';
   }

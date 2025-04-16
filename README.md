@@ -1,4 +1,17 @@
-# opus-media-recorder
+# # @dmk-dark/opus-media-recorder
+
+## Fork Improvements
+
+This fork of the original opus-media-recorder adds the following improvements:
+
+- **TypeScript Definitions**: Full TypeScript type support added for better developer experience
+- **GlobalThis Support**: Replaced direct `global` references with standard `globalThis` for better cross-environment compatibility
+- **Custom Sample Rate**: Added support for custom AudioContext sample rate through a new `audioOptions` parameter, allowing to control the recording quality
+- **Security Fixes**: Updated dependencies to resolve security vulnerabilities identified in the original package
+
+Important: Throughout this documentation, please replace all references to opus-media-recorder with @dmk-dark/opus-media-recorder-fork.
+The rest of the original documentation follows below.
+
 
 * [Try it!](https://kbumsik.io/opus-media-recorder/)
 * [JS Fiddle example](https://jsfiddle.net/kbumsik/v3wpnxao/)
