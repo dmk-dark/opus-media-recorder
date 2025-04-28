@@ -3,7 +3,7 @@
   "version": "0.8.0",
   "author": "Bumsik Kim",
   "license": "MIT",
-  "homepage": "https://github.com/kbumsik/opus-media-recorder",
+  "homepage": "https://github.com/dmk-dark/opus-media-recorder",
   "description": "MedialRecorer polyfill for Opus recording using WebAssembly",
   "main": "OpusMediaRecorder.js",
   "types": "index.d.ts",

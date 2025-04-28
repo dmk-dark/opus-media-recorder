@@ -1,4 +1,4 @@
-# # @dmk-dark/opus-media-recorder
+# @dmk-dark/opus-media-recorder-fork
 
 ## Fork Improvements
 
@@ -87,7 +87,7 @@ For standard usages of `MediaRecorder`, see the [MDN reference](https://develope
 #### Installation
 
 ```bash
-npm install --save-dev opus-media-recorder
+npm install --save-dev @dmk-dark/opus-media-recorder-fork
 ```
 
 #### Working with a bundler
@@ -95,7 +95,7 @@ npm install --save-dev opus-media-recorder
 Because `opus-media-recorder` needs to load a dedicated web worker and `.wasm` binaries, special configurations are necessary. In general:
 
 ```javascript
-import OpusMediaRecorder from 'opus-media-recorder';
+import OpusMediaRecorder from '@dmk-dark/opus-media-recorder-fork';
 // Choose desired format like audio/webm. Default is audio/ogg
 const options = { mimeType: 'audio/ogg' }
 // Web worker and .wasm configuration. Note: This is NOT a part of W3C standard.
@@ -115,7 +115,7 @@ recorder = new MediaRecorder(stream, options, workerOptions);
 #### Simple JavaScript example (webpack)
 
 ```javascript
-import MediaRecorder from 'opus-media-recorder';
+import MediaRecorder from '@dmk-dark/opus-media-recorder-fork';
 // Use worker-loader
 import EncoderWorker from 'worker-loader!opus-media-recorder/encoderWorker.js';
 // You should use file-loader in webpack.config.js.
